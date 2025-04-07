@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/34de4d9a-c7cb-4b18-8012-c0f7d56308c3)# README: Comparing Computational Models in the Morris Water Maze (MWM)
+# README: Comparing Computational Models in the Morris Water Maze (MWM)
 
 ## Project Goals
 
