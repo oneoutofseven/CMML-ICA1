@@ -14,11 +14,9 @@
   pln <- 0
   Nruns <- 10
   ```
-- For single-run trajectory visualizations, set:
+- For single-run visualizations, pln = 1, 2, or 3
 
-  ```r
-  pln <- 1
-  ```
+
   **Note**: Ensure you run enough repetitions (`Nruns >= 10`) for robust statistical results.
 
 ## Code Snippets for Each Objective
