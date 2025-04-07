@@ -18,7 +18,7 @@
 
   ```r
   pln <- 1
-
+  ```
   **Note**: Ensure you run enough repetitions (`Nruns >= 10`) for robust statistical results.
 
 ## Code Snippets for Each Objective
@@ -47,3 +47,75 @@ df_distance_long$Model <- "distance cell"
 
 # Combine the two datasets
 df_final <- rbind(df_place_long, df_distance_long)
+```
+
+#### Plotting the Performance
+
+```r
+library(ggplot2)
+
+summary_df <- df_final %>%
+  group_by(Day, Model) %>%
+  summarise(
+    Mean = mean(Latency, na.rm = TRUE),
+    SE   = sd(Latency, na.rm = TRUE) / sqrt(n()),
+    .groups = "drop"
+  )
+
+ggplot(summary_df, aes(x = Day, y = Mean, color = Model)) +
+  geom_line(size = 1) +
+  geom_point(size = 2) +
+  geom_errorbar(aes(ymin = Mean - SE, ymax = Mean + SE), width = 0.2) +
+  labs(x = "Day", y = "Latency (s)") +
+  theme_classic()
+```
+
+### Objective 2: Combined Model vs. Separate Models
+
+#### Preparing Data for the Combined Model (Example: Ratio 0.25:0.75)
+
+```r
+# For the combined model with 25% distance cell signals and 75% place cell signals:
+latency_combined25 <- PMs_combined25[1,,,,]
+df_combined25 <- data.frame(latency_combined25)
+df_combined25$Day <- 1:nrow(df_combined25)
+df_combined25_long <- gather(df_combined25, "Trial", "Latency", -Day)
+df_combined25_long$Model <- "wall:place=0.25:0.75"
+```
+Repeat similar steps for other ratios (e.g., 0.5:0.5, 0.75:0.25) and label them accordingly.
+
+#### Combining All Models for Comparison
+
+```r
+df_all <- rbind(
+  df_place_long,
+  df_distance_long,
+  df_combined25_long,
+  df_combined50_long,
+  df_combined75_long
+)
+```
+
+#### Plotting Comparison
+
+```r
+summary_combined <- df_all %>%
+  group_by(Day, Model) %>%
+  summarise(
+    Mean = mean(Latency, na.rm = TRUE),
+    SE   = sd(Latency, na.rm = TRUE) / sqrt(n()),
+    .groups = "drop"
+  )
+
+ggplot(summary_combined, aes(x = Day, y = Mean, color = Model)) +
+  geom_line(size = 1) +
+  geom_point(size = 2) +
+  geom_errorbar(aes(ymin = Mean - SE, ymax = Mean + SE), width = 0.2) +
+  labs(x = "Day", y = "Latency (s)") +
+  theme_classic()
+```
+## Interpreting Results
+
+- **Latency**: Lower latency implies improved learning.
+- **Target Quadrant Time**: Higher occupancy indicates better spatial memory.
+- **Wall Zone Time**: Lower values suggest less reliance on boundary cues.
