@@ -12,9 +12,10 @@
 - **Set** `pln <- 0` **for multiple repetitions and reliable statistical comparisons**:
   ```r
   pln <- 0
-  Nruns <- 10
+  Nruns <- 50
   ```
 - For single-run visualizations, pln = 1, 2, or 3
+- In place‐cell model, set the **variable_platform <- 0**. In the combined model, ensure that the platform is fixed by setting **whichplatform = 1**.
 
 
   **Note**: Ensure you run enough repetitions (`Nruns >= 50`) for robust statistical results.
