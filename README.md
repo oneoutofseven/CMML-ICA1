@@ -17,7 +17,7 @@
 - For single-run visualizations, pln = 1, 2, or 3
 
 
-  **Note**: Ensure you run enough repetitions (`Nruns >= 10`) for robust statistical results.
+  **Note**: Ensure you run enough repetitions (`Nruns >= 50`) for robust statistical results.
 
 ## Code Snippets for Each Objective
 
