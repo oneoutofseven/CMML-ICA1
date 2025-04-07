@@ -82,6 +82,7 @@ df_combined25_long <- gather(df_combined25, "Trial", "Latency", -Day)
 df_combined25_long$Model <- "wall:place=0.25:0.75"
 ```
 Repeat similar steps for other ratios (e.g., 0.5:0.5, 0.75:0.25) and label them accordingly.
+**Note**: The weight of distance cells can be changed by altering **weight_wall <- 0.25**
 
 #### Combining All Models for Comparison
 
