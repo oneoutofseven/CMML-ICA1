@@ -1,4 +1,4 @@
-# README: Comparing Computational Models in the Morris Water Maze (MWM)
+# Comparing Computational Models in the Morris Water Maze (MWM)
 
 ## Project Goals
 
