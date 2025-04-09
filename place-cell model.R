@@ -1,126 +1,184 @@
-run_trial <- function(weights0, Wmult, sigma_pc, sigma_ac, PC_x, PC_y, Vdecay, ac_const, beta, etdecay, lrate, discf, noise, platform_x, platform_y, starting_x, starting_y, speed, wall_pun)
+run_trial <- function(weights0, Wmult, sigma_pc, sigma_ac, PC_x, PC_y,
+                      Vdecay, ac_const, beta, etdecay, lrate, discf,
+                      noise, platform_x, platform_y, starting_x, starting_y,
+                      speed, wall_pun)
 {
   # FIXED PARAMETERS OF THE EXPERIMENT
+  pool_diameter    <- 1.4    # Maze diameter in meters
+  platform_radius <- 0.06    # Platform radius in meters
+
+  N_pc <- 211  # Number of place cells
+  N_ac <- 36   # Number of action cells
+
+  # Initialize some counters / variables
+  which     <- 0        # Index of the currently selected action
+  dist      <- 0        # Total travel distance
+  wall_zone <- 0        # Count of time steps spent near the wall
+  quadrants <- c(0,0,0,0)  # Count of time steps spent in each of the 4 quadrants
+
+  # Copy the initial weights
+  weights <- weights0
   
-  pool_diameter <- 1.4 #Maze diameter in metres (m)
-  platform_radius <- 0.06 #Platform radius
-  
-  N_pc <- 211 #Population of place cells
-  N_ac <- 36 #Population of action cells
-  which <- 0
-  
-  dist <- 0
-  wall_zone <- 0
-  quadrants <- c(0,0,0,0) #Percentage spent on each quadrant
-  
-  weights <- weights0 #Initialize modifiable weights
-  
-  el_tr <- matrix(rep(0, N_pc*N_ac), nrow = N_pc) #Initialize eligibility traces matrix
-  
-  #Initialize trajectories
-  track_x <- starting_x #Current position of trajectory is equal to the starting location of the animal
+  # Initialize eligibility traces
+  el_tr <- matrix(0, nrow=N_pc, ncol=N_ac)
+
+  # Initialize trajectory variables
+  track_x <- starting_x
   track_y <- starting_y
-  vel_x <- 0
-  vel_y <- 0
-  
+  vel_x   <- 0
+  vel_y   <- 0
+
   # NAVIGATION LOOP
-  while ((track_x[length(track_x)] - platform_x)^2 + (track_y[length(track_y)] - platform_y)^2 > platform_radius^2)
+  # Continue until the agent is within the platform radius
+  while ((track_x[length(track_x)] - platform_x)^2 + (track_y[length(track_y)] - platform_y)^2 >
+         platform_radius^2)
   {
-    weights <- weights*(1-noise) + matrix(runif(N_pc*N_ac), nrow = N_pc)*Wmult*noise
-    
-    #Calculate PC activation
-    PC_activation <- rep(0, N_pc)
+    # Apply a bit of random noise to weights
+    weights <- weights * (1 - noise) + matrix(runif(N_pc*N_ac), nrow=N_pc) * Wmult * noise
+
+    # Compute place-cell activation
+    PC_activation <- numeric(N_pc)
     for (i in 1:N_pc){
-      PC_activation[i] <- exp(-((track_x[length(track_x)] - PC_x[i])^2 + (track_y[length(track_y)] - PC_y[i])^2)/(2*sigma_pc^2))
+      dx <- track_x[length(track_x)] - PC_x[i]
+      dy <- track_y[length(track_y)] - PC_y[i]
+      PC_activation[i] <- exp(- (dx^2 + dy^2) / (2 * sigma_pc^2))
     }
-    
-    #Calculate AC activation (i.e. value of the action, Q)
-    if (length(track_x) > 1){
-      prevQ <- AC_activation[which] #Displays the Q value before movement
+
+    # Store the previous Q-value (for the chosen action) if this is not the first step
+    if (length(track_x) > 1) {
+      prevQ <- AC_activation[which] 
     }
-    
-    AC_activation <- PC_activation %*% weights
-    
-    #Make an action
+
+    # Compute the Q-values (action-cell activation) by multiplying place-cell activation with the weights
+    AC_activation <- as.vector(PC_activation %*% weights)
+
+    # --- SAFETY CHECKS to avoid zero or NaN sums ---
+    # Replace any NaN in AC_activation with 0, and ensure they're not negative
+    AC_activation[is.na(AC_activation)] <- 0
+    AC_activation <- pmax(AC_activation, 0)
+
+    # Raise AC_activation to the power of beta
     ACsel <- AC_activation^beta
-    ACsel <- ACsel / sum(ACsel)
+    sAC   <- sum(ACsel)
+
+    # If the sum is zero, NaN, or Inf, revert to a uniform distribution
+    if (sAC <= 0 || is.na(sAC) || is.infinite(sAC)) {
+      ACsel <- rep(1/N_ac, N_ac)
+    } else {
+      ACsel <- ACsel / sAC
+    }
+
+    # Select an action stochastically based on ACsel
     ASrand <- runif(1)
-    which <- 1
-    ASsum <- ACsel[1]
-    while (which < N_ac && ASsum < ASrand){
+    which  <- 1
+    ASsum  <- ACsel[1]
+    while (which < N_ac && ASsum < ASrand) {
       which <- which + 1
       ASsum <- ASsum + ACsel[which]
     }
-    
-    #Eligibility traces
+
+    # Update eligibility traces
     el_tr <- el_tr * etdecay
-    
     for (j in 1:N_ac){
-      itmp <- min(abs(j-which), N_ac-abs(j-which))
-      actgaus <- exp(-(itmp*itmp)/(2*sigma_ac*sigma_ac))
-      el_tr[,j] <- el_tr[,j] + actgaus*AC_activation[j]*t(t(PC_activation))
+      # Gaussian-like spreading of eligibility over neighboring actions
+      itmp    <- min(abs(j - which), N_ac - abs(j - which))
+      actgaus <- exp(- (itmp^2) / (2 * sigma_ac^2))
+      el_tr[, j] <- el_tr[, j] + actgaus * AC_activation[j] * PC_activation
     }
-    
-    vel_x = c(vel_x, (vel_x[length(vel_x)]+ac_const*cos(which/N_ac*2*pi))*Vdecay)
-    vel_y = c(vel_y, (vel_y[length(vel_y)]+ac_const*sin(which/N_ac*2*pi))*Vdecay)
-    #velocity per time step (not second)
-    track_x = c(track_x, track_x[length(track_x)]+vel_x[length(vel_x)])
-    track_y = c(track_y, track_y[length(track_y)]+vel_y[length(vel_y)])
-    
-    #Check if not out of bounds, reset location & speed if so
-    if (track_x[length(track_x)]^2 + track_y[length(track_y)]^2 > (pool_diameter/2)^2)
-    {
-      ratio = (track_x[length(track_x)]^2 + track_y[length(track_y)]^2)/((pool_diameter/2)^2)
-      track_x[length(track_x)] = track_x[length(track_x)]/sqrt(ratio)
-      track_y[length(track_y)] = track_y[length(track_y)]/sqrt(ratio)
-      vel_x[length(vel_x)] = track_x[length(track_x)] - track_x[length(track_x)-1]
-      vel_y[length(vel_y)] = track_y[length(track_y)] - track_y[length(track_y)-1]
+
+    # Update velocity
+    new_vel_x <- (vel_x[length(vel_x)] + ac_const * cos(which / N_ac * 2 * pi)) * Vdecay
+    new_vel_y <- (vel_y[length(vel_y)] + ac_const * sin(which / N_ac * 2 * pi)) * Vdecay
+    vel_x <- c(vel_x, new_vel_x)
+    vel_y <- c(vel_y, new_vel_y)
+
+    # Update position
+    new_x <- track_x[length(track_x)] + new_vel_x
+    new_y <- track_y[length(track_y)] + new_vel_y
+    track_x <- c(track_x, new_x)
+    track_y <- c(track_y, new_y)
+
+    # If out of bounds (outside the maze), push back to the edge
+    if (track_x[length(track_x)]^2 + track_y[length(track_y)]^2 > (pool_diameter / 2)^2) {
+      ratio <- (track_x[length(track_x)]^2 + track_y[length(track_y)]^2) / ((pool_diameter / 2)^2)
+      track_x[length(track_x)] <- track_x[length(track_x)] / sqrt(ratio)
+      track_y[length(track_y)] <- track_y[length(track_y)] / sqrt(ratio)
+      vel_x[length(vel_x)]     <- track_x[length(track_x)] - track_x[length(track_x) - 1]
+      vel_y[length(vel_y)]     <- track_y[length(track_y)] - track_y[length(track_y) - 1]
     }
-    
-    
-    if (length(track_x) > 2)
-    { if ((track_x[length(track_x)]  - platform_x)^2 + (track_y[length(track_y)]  - platform_y)^2 < platform_radius^2)
-    { rew = 10 } #found platform - reward
-      else if (track_x[length(track_x)]^2+track_y[length(track_y)]^2 > (0.99*pool_diameter/2)^2)
-      { rew = -wall_pun } #hit wall - punishment
-      else
-      { rew = 0 } #didn't find - no reward
-      
-      currQ = AC_activation[which]
-      tderr = rew + discf*currQ - prevQ #temporal difference error
-      weights = pmax(weights + lrate*tderr*el_tr, 0)
+
+    # Compute reward and update weights
+    if (length(track_x) > 2) {
+      # Check if the platform is found
+      if ((track_x[length(track_x)] - platform_x)^2 + (track_y[length(track_y)] - platform_y)^2 <
+          platform_radius^2) {
+        rew <- 10  # Found the platform
+      } else if (track_x[length(track_x)]^2 + track_y[length(track_y)]^2 >
+                 (0.99 * pool_diameter / 2)^2) {
+        rew <- -wall_pun  # Hit the wall
+      } else {
+        rew <- 0
+      }
+
+      currQ  <- AC_activation[which]
+      tderr  <- rew + discf * currQ - prevQ  # Temporal difference error
+      weights <- pmax(weights + lrate * tderr * el_tr, 0)
     }
-    
-    laststep = sqrt((track_x[length(track_x)]-track_x[length(track_x)-1])^2 + (track_y[length(track_y)]-track_y[length(track_y)-1])^2)
-    dist = dist + laststep
-    
-    if (track_x[length(track_x)]^2 + track_y[length(track_y)]^2 > 0.8*(pool_diameter/2)^2)
-    { wall_zone = wall_zone + 1 }
-    else if (track_x[length(track_x)] > 0 && track_y[length(track_y)] > 0)
-    { quadrants[1] = quadrants[1] + 1 }
-    else if (track_x[length(track_x)] < 0 && track_y[length(track_y)] > 0)
-    { quadrants[2] = quadrants[2] + 1 }
-    else if (track_x[length(track_x)] < 0 && track_y[length(track_y)] < 0)
-    { quadrants[3] = quadrants[3] + 1 }
-    else
-    { quadrants[4] = quadrants[4] + 1 }
-    
-    if (length(track_x) > 100) # evaluate latency only after 100+ steps to be accurate
-    { speed_ts = mean(sqrt((vel_x[-1]^2+vel_y[-1]^2))) # speed in meters/time step
-    latency = (length(track_x)-1) * speed_ts / speed # convert to seconds
-    if (latency > 60) # if more than a minute, stop
-    { break }
+
+    # Update total traveled distance
+    last_step_dist <- sqrt(
+      (track_x[length(track_x)] - track_x[length(track_x) - 1])^2 +
+      (track_y[length(track_y)] - track_y[length(track_y) - 1])^2
+    )
+    dist <- dist + last_step_dist
+
+    # Record time step in wall zone or in a certain quadrant
+    if (track_x[length(track_x)]^2 + track_y[length(track_y)]^2 >
+        0.8 * (pool_diameter / 2)^2) {
+      wall_zone <- wall_zone + 1
+    } else if (track_x[length(track_x)] > 0 && track_y[length(track_y)] > 0) {
+      quadrants[1] <- quadrants[1] + 1
+    } else if (track_x[length(track_x)] < 0 && track_y[length(track_y)] > 0) {
+      quadrants[2] <- quadrants[2] + 1
+    } else if (track_x[length(track_x)] < 0 && track_y[length(track_y)] < 0) {
+      quadrants[3] <- quadrants[3] + 1
+    } else {
+      quadrants[4] <- quadrants[4] + 1
     }
-    
-  }
-  
-  latency <- length(track_x)-1 # latency in time steps
-  wall_zone <- wall_zone/latency
-  quadrants <- quadrants/latency
-  speed_ts <- mean(sqrt((vel_x[-1]^2+vel_y[-1]^2))) # speed in meters/time step
-  
-  latency <- latency * speed_ts / speed # latency in seconds
-  return(list(weights, track_x, track_y, vel_x, vel_y, dist, wall_zone, quadrants, latency))
+
+    # If the agent has been navigating for a long time (>60s), stop
+    if (length(track_x) > 100) {
+      # Average speed in meters / time step
+      speed_ts <- mean(sqrt(vel_x[-1]^2 + vel_y[-1]^2))
+      # Convert number of steps to seconds
+      latency <- (length(track_x) - 1) * speed_ts / speed
+      if (latency > 60) {
+        break
+      }
+    }
+  } # End of while loop
+
+  # Compute final latency in seconds
+  num_steps <- length(track_x) - 1
+  speed_ts  <- mean(sqrt(vel_x[-1]^2 + vel_y[-1]^2))
+  latency   <- num_steps * speed_ts / speed
+
+  # Convert wall_zone and quadrants to fractions of total steps
+  wall_zone <- wall_zone / num_steps
+  quadrants <- quadrants / num_steps
+
+  # Return key results
+  return(list(
+    weights,     # updated weights
+    track_x,     # trajectory X
+    track_y,     # trajectory Y
+    vel_x,       # velocity X over time
+    vel_y,       # velocity Y over time
+    dist,        # total distance
+    wall_zone,   # fraction of time steps near the wall
+    quadrants,   # fraction of time steps in each quadrant
+    latency      # total latency in seconds
+  ))
 }
   
 N_pc <- 211 #Population of place cells [100..300]
