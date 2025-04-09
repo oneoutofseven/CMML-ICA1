@@ -188,7 +188,6 @@ for (i in 1:N_pc) {
         PC_y[i] <- (runif(1) - 0.5)*pool_diameter
     }
 }
-par(mfrow=c(Ndays,Ntrials*pln))
 
 for (day in 1:Ndays) {
     idxs = sample(4) #randomly choose 4 starting locations
