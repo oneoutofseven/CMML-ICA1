@@ -126,10 +126,10 @@ run_trial <- function(weights0, Wmult, sigma_pc, sigma_ac, PC_x, PC_y, Vdecay, a
 N_pc <- 211 #Population of place cells [100..300]
 N_ac <- 36 #Population of action cells [25..50]
 
-plot_trajectories <- 1 #yes - 1, no - 0
-plot_cognitive_maps <- 1 #yes - 1, no - 0
+plot_trajectories <- 0 #yes - 1, no - 0
+plot_cognitive_maps <- 0 #yes - 1, no - 0
 pln <- plot_trajectories + plot_cognitive_maps
-Nruns <- 10 #how many runs to run if not plotting anything
+Nruns <- 50 #how many runs to run if not plotting anything
 
 pool_diameter <- 1.4 #Maze diameter (\phi) in metres (m)
 platform_radius <- 0.06 #Platform radius (m)
@@ -149,7 +149,7 @@ hitwall <- 0.5 #punishment for hitting the wall [0..1]
 speed <- 0.175 #mouse speed (m/s) [0.1..0.25]
 
 Ntrials <- 4 #number of trials per day
-Ndays <- 5 #number of days
+Ndays <- 8 #number of days
 
 #performance measures to compute: latency, distance, time in target quadrant, opposite quadrant, and wall zone
 if (pln > 0.5) #if any plots
