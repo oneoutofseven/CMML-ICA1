@@ -145,7 +145,7 @@ plot_trajectories <- 0 #yes - 1, no - 0
 plot_cognitive_maps <- 0 #yes - 1, no - 0
 pln <- plot_trajectories + plot_cognitive_maps
 Nruns <- 50 #how many runs to run if not plotting anything
-variable_platform <- 1 #the platform is variable - 1, the platform is fixed - 0
+variable_platform <- 0 #the platform is variable - 1, the platform is fixed - 0
 
 pool_diameter <- 1.4 #Maze diameter (\phi) in metres (m)
 platform_radius <- 0.06 #Platform radius (m)
