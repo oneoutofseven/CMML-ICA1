@@ -338,8 +338,8 @@ for (pset in 1:Npsets){
       for (trial in 1:Ntrials){
         
         # fix or variable platform
-        # whichplatform = 1 # fix
-        whichplatform=sample(c(1,-1),1) # variable
+        whichplatform = 1 # fix
+        # whichplatform=sample(c(1,-1),1) # variable
         
         idx <- idxs[trial] #take each location
         starting_x <- starting_xs[idx]
@@ -569,8 +569,8 @@ for (pset in 1:Npsets){
         for (trial in 1:Ntrials){
           
           # fix or variable platform
-          # whichplatform = 1 # fix
-          whichplatform=sample(c(1,-1),1) # variable
+          whichplatform = 1 # fix
+          # whichplatform=sample(c(1,-1),1) # variable
           
           idx <- idxs[trial] #take each location
           starting_x <- starting_xs[idx]
