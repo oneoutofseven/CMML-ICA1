@@ -373,8 +373,6 @@ if(pln > 0.5){
   wall_zone = cbind(day,wall_zone)
   all = cbind(latency,dist[,2],target_quadrant[,2],opposite_quadrant[,2],wall_zone[,2])
   colnames(all)=c("day","latency","dist","target_quadrant","opposite_quadrant","wall_zone")
-  
-  write.csv(all,"radius_1 vari.csv")
 }
 
 
