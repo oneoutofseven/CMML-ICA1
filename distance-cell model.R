@@ -141,10 +141,10 @@ run_trial <- function(weights0, Wmult, sigma_dc, sigma_ac, DC, Vdecay, ac_const,
 N_dc <- 10 #Population of distance cells [100..300]
 N_ac <- 36 #Population of action cells [25..50]
 
-plot_trajectories <- 1 #yes - 1, no - 0
-plot_cognitive_maps <- 1 #yes - 1, no - 0
+plot_trajectories <- 0 #yes - 1, no - 0
+plot_cognitive_maps <- 0 #yes - 1, no - 0
 pln <- plot_trajectories + plot_cognitive_maps
-Nruns <- 1 #how many runs to run if not plotting anything
+Nruns <- 50 #how many runs to run if not plotting anything
 variable_platform <- 1 #the platform is variable - 1, the platform is fixed - 0
 
 pool_diameter <- 1.4 #Maze diameter (\phi) in metres (m)
