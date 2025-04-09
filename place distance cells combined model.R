@@ -231,7 +231,7 @@ sigma_ac <- c(2,2) #action cell sigma (standard deviation), in action cells [1..
 
 etdecay <- 0.83 #Eligibility trace decay (lambda) [0.75..0.95] LESS THAN GAMMA!
 beta <- c(6,6) #Exploration-exploitation factor (\beta) [0.5..12]
-alpha <- c(0.006,0.006) #Learning rate (\alpha) [0.005..0.02]
+alpha <- c(0.01,0.01) #Learning rate (\alpha) [0.005..0.02]
 gamma <- c(0.85,0.85) #Discount factor (\gamma) [0.75..0.95]
 
 Vdecay <- c(0.82,0.82) #velocity decay [0.75..0.95]
@@ -240,7 +240,7 @@ Wnoise <- c(0.0004,0.0004) #Weight noise [0.0001..0.0007]
 Wmult <- c(0.1,0.1) #Weight multiplier [0.05..0.15]
 hitwall <- c(0,0)#punishment for hitting the wall [0..1]
 speed <- c(0.175,0.175) #mouse speed (m/s) [0.1..0.25]
-weight_wall = 0.2
+weight_wall = 0.25
 weight_place = 1 - weight_wall
 
 
