@@ -24,8 +24,8 @@
 
 ### Objective 1: Distance vs. Place Model Performance (Using "place-cell model.R" and "distance-cell model.R") 
 
-#### Extracting Performance Metrics (Example: Latency)
-
+### Step 1: Run "place-cell model.R"
+### Step 2: Extracting Performance Metrics (Example: Latency)
 ```r
 library(tidyr)
 library(dplyr)
@@ -39,6 +39,8 @@ df_place_long <- gather(df_place, "Trial", "Latency", -Day)
 df_place_long$Model <- "place cell"
 ```
 
+### Step 3: Run "distance-cell model.R"
+### Step 4: Extracting Performance Metrics (Example: Latency)
 ```r
 # For the distance-cell-only model (Use it after runing "place-cell model.R")
 PMs_distance <- PMs
@@ -52,8 +54,7 @@ df_distance_long$Model <- "distance cell"
 df_final <- rbind(df_place_long, df_distance_long)
 ```
 
-#### Plotting the Performance
-
+### Step5: Plotting the Performance
 ```r
 library(ggplot2)
 
