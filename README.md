@@ -30,15 +30,19 @@
 library(tidyr)
 library(dplyr)
 
-# For the place-cell-only model
-latency_place <- PMs_place[1,,,] # In the model, it only has PMs. So, you can use PMs_place <- PMs to store the data.
+# For the place-cell-only model (Use it after runing "place-cell model.R")
+PMs_place <- PMs
+latency_place <- PMs_place[1,,,] # In the model, it only has PMs. So, you can use "PMs_place <- PMs" to store the data.
 df_place <- data.frame(latency_place)
 df_place$Day <- 1:nrow(df_place)
 df_place_long <- gather(df_place, "Trial", "Latency", -Day)
 df_place_long$Model <- "place cell"
+```
 
-# For the distance-cell-only model
-latency_distance <- PMs_distance[1,,,]
+```r
+# For the distance-cell-only model (Use it after runing "place-cell model.R")
+PMs_distance <- PMs
+latency_distance <- PMs_distance[1,,,] # In the model, it only has PMs. So, you can use "PMs_distance <- PMs" to store the data.
 df_distance <- data.frame(latency_distance)
 df_distance$Day <- 1:nrow(df_distance)
 df_distance_long <- gather(df_distance, "Trial", "Latency", -Day)
