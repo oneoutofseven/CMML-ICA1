@@ -54,7 +54,7 @@ df_distance_long$Model <- "distance cell"
 df_final <- rbind(df_place_long, df_distance_long)
 ```
 
-#### Step5: Plotting the Performance
+#### Step 5: Plotting the Performance
 ```r
 library(ggplot2)
 
@@ -121,6 +121,7 @@ ggplot(summary_combined, aes(x = Day, y = Mean, color = Model)) +
   theme_classic()
 ```
 **Note**: For "target quadrant" and "wall zone" time, change PM[1,,,,] to PM[3,,,,] or PM[5,,,,]
+
 ## Interpreting Results
 
 - **Latency**: Lower latency implies improved learning.
