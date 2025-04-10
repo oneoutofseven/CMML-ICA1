@@ -78,21 +78,21 @@ ggplot(summary_df, aes(x = Day, y = Mean, color = Model)) +
 ---
 ### Objective 2: Combined Model vs. Separate Models (Using "place distance cells combined model.R") 
 
-#### Preparing Data for the Combined Model (Example: Ratio 0.25:0.75)
-
+#### Step 1: Run "place distance cells combined model.R"
+#### Step 2: Preparing Data for the Combined Model (Example: Ratio 0.25:0.75)
 ```r
-# For the combined model with 25% distance cell signals and 75% place cell signals:
+# For the combined model with 25% distance cell signals and 75% place cell signals
+PMs_combined25[1,,,,] <- PMs[1,,,,]
 latency_combined25 <- PMs_combined25[1,,,,] # In the model, it only has PMs. So, you can use PMs_combined25 <- PMs to store the data.
 df_combined25 <- data.frame(latency_combined25)
 df_combined25$Day <- 1:nrow(df_combined25)
 df_combined25_long <- gather(df_combined25, "Trial", "Latency", -Day)
 df_combined25_long$Model <- "wall:place=0.25:0.75"
 ```
-Repeat similar steps for other ratios (e.g., 0.5:0.5, 0.75:0.25) and label them accordingly.  
-**Note**: The weight of distance cells can be changed by altering **weight_wall <- 0.25**
+#### Step 3: Repeat similar steps for other ratios (e.g., 0.5:0.5, 0.75:0.25) and label them accordingly.  
+**Note**: The weight of distance cells can be changed by altering **weight_wall <- 0.5**
 
-#### Combining All Models for Comparison
-
+#### Step 4: Combine All Models for Comparison
 ```r
 df_all <- rbind(
   df_place_long,
@@ -103,8 +103,7 @@ df_all <- rbind(
 )
 ```
 
-#### Plotting Comparison
-
+#### Step 5: Plotting Comparison
 ```r
 summary_combined <- df_all %>%
   group_by(Day, Model) %>%
@@ -121,6 +120,7 @@ ggplot(summary_combined, aes(x = Day, y = Mean, color = Model)) +
   labs(x = "Day", y = "Latency (s)") +
   theme_classic()
 ```
+**Note**: For "target quadrant" and "wall zone" time, change PM[1,,,,] to PM[3,,,,] or PM[5,,,,]
 ## Interpreting Results
 
 - **Latency**: Lower latency implies improved learning.
