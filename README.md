@@ -1,6 +1,6 @@
 # Comparing Computational Models in the Morris Water Maze (MWM)
 
-## Project Goals
+## 1. Project Goals
 
 1. **Objective 1:** Determine **if and when** the distance‐cell model can outperform the place‐cell model under **fixed‐platform** conditions.  
 2. **Objective 2:** Evaluate the performance of the **combined place‐distance cell model** across various balance ratios, compared to place‐only and distance‐only models.
@@ -20,7 +20,7 @@
 
   **Note**: Ensure you run enough repetitions (`Nruns >= 50`) for robust statistical results.
 ---
-## Code Snippets for Each Objective
+## 2. Code Snippets for Each Objective
 
 ### Objective 1: Distance vs. Place Model Performance (Using "place-cell model.R" and "distance-cell model.R") 
 
@@ -140,7 +140,7 @@ TukeyHSD(anova_latency)
 
 **Note**: For "target quadrant" and "wall zone" time, change PM[1,,,,] to PM[3,,,,] or PM[5,,,,]
 
-## Interpreting Results
+## 3. Interpreting Results
 
 - **Latency**: Lower latency implies improved learning.
 - **Target Quadrant Time**: Higher occupancy indicates better spatial memory.
