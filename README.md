@@ -22,7 +22,7 @@
 
 ## Code Snippets for Each Objective
 
-### Objective 1: Distance vs. Place Model Performance
+### Objective 1: Distance vs. Place Model Performance (Using place-cell model.R and distance-cell model.R) 
 
 #### Extracting Performance Metrics (Example: Latency)
 
@@ -69,7 +69,7 @@ ggplot(summary_df, aes(x = Day, y = Mean, color = Model)) +
   theme_classic()
 ```
 
-### Objective 2: Combined Model vs. Separate Models
+### Objective 2: Combined Model vs. Separate Models (Using place distance cell combined model.R) 
 
 #### Preparing Data for the Combined Model (Example: Ratio 0.25:0.75)
 
