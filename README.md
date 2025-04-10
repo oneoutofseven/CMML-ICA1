@@ -137,8 +137,7 @@ summary(anova_latency)
 
 TukeyHSD(anova_latency)
 ```
-
-📝  **Note**: For "target quadrant" and "wall zone" time, change PM[1,,,,] to PM[3,,,,] or PM[5,,,,]
+📝 **Note**: For "target quadrant" and "wall zone" time, change PM[1,,,,] to PM[3,,,,] or PM[5,,,,]
 ---
 ## 📊 4. Interpreting Results
 
