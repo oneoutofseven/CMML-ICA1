@@ -22,7 +22,7 @@
 
 ## Code Snippets for Each Objective
 
-### Objective 1: Distance vs. Place Model Performance (Using place-cell model.R and distance-cell model.R) 
+### Objective 1: Distance vs. Place Model Performance (Using **place-cell model.R** and **distance-cell model.R**) 
 
 #### Extracting Performance Metrics (Example: Latency)
 
