@@ -374,8 +374,3 @@ if(pln > 0.5){
   all = cbind(latency,dist[,2],target_quadrant[,2],opposite_quadrant[,2],wall_zone[,2])
   colnames(all)=c("day","latency","dist","target_quadrant","opposite_quadrant","wall_zone")
 }
-
-
-
-# par(mfrow=c(1,1))
-# plot(latency,latency~day)
