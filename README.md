@@ -5,8 +5,7 @@
 1. **Objective 1:** Determine **if and when** the distance‐cell model can outperform the place‐cell model under **fixed‐platform** conditions.  
 2. **Objective 2:** Evaluate the performance of the **combined place‐distance cell model** across various balance ratios, compared to place‐only and distance‐only models.
 
-
-
+<!-- 多空一行 -->
 ## 2. Important Notes Before Running
 
 - **Set** `pln <- 0` **for multiple repetitions and reliable statistical comparisons**:
@@ -16,7 +15,6 @@
   ```
 - For single-run visualizations, pln = 1, 2, or 3
 - In distance‐cell model, set the **variable_platform <- 0**. In the combined model, ensure that the platform is fixed by setting **whichplatform = 1**.
-
 
   **Note**: Ensure you run enough repetitions (`Nruns >= 50`) for robust statistical results.
 ---
