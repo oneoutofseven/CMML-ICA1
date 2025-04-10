@@ -88,7 +88,7 @@ TukeyHSD(anova_latency)
 #### Step 2: Preparing Data for the Combined Model (Example: Ratio 0.25:0.75)
 ```r
 # For the combined model with 25% distance cell signals and 75% place cell signals
-PMs_combined25[1,,,,] <- PMs[1,,,,]
+PMs_combined25 <- PMs[1,,,,]
 latency_combined25 <- PMs_combined25[1,,,,] # In the model, it only has PMs. So, you can use PMs_combined25 <- PMs to store the data.
 df_combined25 <- data.frame(latency_combined25)
 df_combined25$Day <- 1:nrow(df_combined25)
