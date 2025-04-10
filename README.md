@@ -78,6 +78,8 @@ ggplot(summary_df, aes(x = Day, y = Mean, color = Model)) +
 ```r
 anova_latency <- aov(Latency ~ as.factor(Day) * Model, data = summary_df)
 summary(anova_latency)
+
+TukeyHSD(anova_latency)
 ```
 
 **Note**: For "target quadrant" and "wall zone" time, change PM[1,,,] to PM[3,,,] or PM[5,,,]
@@ -130,8 +132,10 @@ ggplot(summary_combined, aes(x = Day, y = Mean, color = Model)) +
 
 #### Step 6: Statistical Analysis
 ```r
-anova_latency <- aov(Latency ~ Model, data = summary_combined)
+anova_latency <- aov(Latency ~ as.factor(Day) * Model, data = summary_combined)
 summary(anova_latency)
+
+TukeyHSD(anova_latency)
 ```
 
 **Note**: For "target quadrant" and "wall zone" time, change PM[1,,,,] to PM[3,,,,] or PM[5,,,,]
