@@ -7,7 +7,7 @@
 
 ---
 
-## Important Notes Before Running
+## 2. Important Notes Before Running
 
 - **Set** `pln <- 0` **for multiple repetitions and reliable statistical comparisons**:
   ```r
@@ -20,7 +20,7 @@
 
   **Note**: Ensure you run enough repetitions (`Nruns >= 50`) for robust statistical results.
 ---
-## 2. Code Snippets for Each Objective
+## 3. Code Snippets for Each Objective
 
 ### Objective 1: Distance vs. Place Model Performance (Using "place-cell model.R" and "distance-cell model.R") 
 
@@ -140,7 +140,7 @@ TukeyHSD(anova_latency)
 
 **Note**: For "target quadrant" and "wall zone" time, change PM[1,,,,] to PM[3,,,,] or PM[5,,,,]
 ---
-## 3. Interpreting Results
+## 4. Interpreting Results
 
 - **Latency**: Lower latency implies improved learning.
 - **Target Quadrant Time**: Higher occupancy indicates better spatial memory.
