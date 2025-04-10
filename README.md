@@ -1,13 +1,13 @@
 # Comparing Computational Models in the Morris Water Maze (MWM)
 
-## 1. Project Goals
+## 🧭 1. Project Goals
 
 1. **Objective 1:** Determine **if and when** the distance‐cell model can outperform the place‐cell model under **fixed‐platform** conditions.  
 2. **Objective 2:** Evaluate the performance of the **combined place‐distance cell model** across various balance ratios, compared to place‐only and distance‐only models.
 
 ---
 
-## 2. Important Notes Before Running
+## ⚙️ 2. Important Notes Before Running
 
 - **Set** `pln <- 0` **for multiple repetitions and reliable statistical comparisons**:
   ```r
@@ -18,11 +18,11 @@
 - In distance‐cell model, set the **variable_platform <- 0**. In the combined model, ensure that the platform is fixed by setting **whichplatform = 1**.
 
 
-  **Note**: Ensure you run enough repetitions (`Nruns >= 50`) for robust statistical results.
+  📝 **Note**: Ensure you run enough repetitions (`Nruns >= 50`) for robust statistical results.
 ---
-## 3. Code Snippets for Each Objective
+## 💻 3. Code Snippets for Each Objective
 
-### Objective 1: Distance vs. Place Model Performance (Using "place-cell model.R" and "distance-cell model.R") 
+### 🎯 Objective 1: Distance vs. Place Model Performance (Using "place-cell model.R" and "distance-cell model.R") 
 
 #### Step 1: Run "place-cell model.R"
 #### Step 2: Extracting Performance Metrics (Example: Latency)
@@ -82,10 +82,10 @@ summary(anova_latency)
 TukeyHSD(anova_latency)
 ```
 
-**Note**: For "target quadrant" and "wall zone" time, change PM[1,,,] to PM[3,,,] or PM[5,,,]
+📝 **Note**: For "target quadrant" and "wall zone" time, change PM[1,,,] to PM[3,,,] or PM[5,,,]
 
 ---
-### Objective 2: Combined Model vs. Separate Models (Using "place distance cells combined model.R") 
+### 🎯 Objective 2: Combined Model vs. Separate Models (Using "place distance cells combined model.R") 
 
 #### Step 1: Run "place distance cells combined model.R"
 #### Step 2: Preparing Data for the Combined Model (Example: Ratio 0.25:0.75)
@@ -99,7 +99,7 @@ df_combined25_long <- gather(df_combined25, "Trial", "Latency", -Day)
 df_combined25_long$Model <- "wall:place=0.25:0.75"
 ```
 #### Step 3: Repeat similar steps for other ratios (0:1, 0.5:0.5, 0.75:0.25, 1:0) and label them accordingly.  
-**Note**: The weight of distance cells can be changed by altering **weight_wall <- 0.5**
+📝 **Note**: The weight of distance cells can be changed by altering **weight_wall <- 0.5**
 
 #### Step 4: Combine All Models for Comparison
 ```r
@@ -138,9 +138,9 @@ summary(anova_latency)
 TukeyHSD(anova_latency)
 ```
 
-**Note**: For "target quadrant" and "wall zone" time, change PM[1,,,,] to PM[3,,,,] or PM[5,,,,]
+📝 **Note**: For "target quadrant" and "wall zone" time, change PM[1,,,,] to PM[3,,,,] or PM[5,,,,]
 ---
-## 4. Interpreting Results
+## 📊 4. Interpreting Results
 
 - **Latency**: Lower latency implies improved learning.
 - **Target Quadrant Time**: Higher occupancy indicates better spatial memory.
