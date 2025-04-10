@@ -5,7 +5,10 @@
 1. **Objective 1:** Determine **if and when** the distance‐cell model can outperform the place‐cell model under **fixed‐platform** conditions.  
 2. **Objective 2:** Evaluate the performance of the **combined place‐distance cell model** across various balance ratios, compared to place‐only and distance‐only models.
 
-<!-- 多空一行 -->
+<!-- -->
+<!-- -->
+<!-- -->
+<!-- -->
 ## 2. Important Notes Before Running
 
 - **Set** `pln <- 0` **for multiple repetitions and reliable statistical comparisons**:
