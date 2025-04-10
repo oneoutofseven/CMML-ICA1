@@ -73,7 +73,7 @@ ggplot(summary_df, aes(x = Day, y = Mean, color = Model)) +
   labs(x = "Day", y = "Latency (s)") +
   theme_classic()
 ```
----
+
 ### Objective 2: Combined Model vs. Separate Models (Using "place distance cells combined model.R") 
 
 #### Preparing Data for the Combined Model (Example: Ratio 0.25:0.75)
