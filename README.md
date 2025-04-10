@@ -76,7 +76,7 @@ ggplot(summary_df, aes(x = Day, y = Mean, color = Model)) +
 
 #### Step 6: Statistical Analysis
 ```r
-anova_latency <- aov(Latency ~ as.factor(Day) * Model, data = summary_df)
+anova_latency <- aov(Latency ~ as.factor(Day) * Model, data = df_final)
 summary(anova_latency)
 
 TukeyHSD(anova_latency)
@@ -132,7 +132,7 @@ ggplot(summary_combined, aes(x = Day, y = Mean, color = Model)) +
 
 #### Step 6: Statistical Analysis
 ```r
-anova_latency <- aov(Latency ~ as.factor(Day) * Model, data = summary_combined)
+anova_latency <- aov(Latency ~ as.factor(Day) * Model, data = df_all)
 summary(anova_latency)
 
 TukeyHSD(anova_latency)
