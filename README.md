@@ -73,6 +73,13 @@ ggplot(summary_df, aes(x = Day, y = Mean, color = Model)) +
   labs(x = "Day", y = "Latency (s)") +
   theme_classic()
 ```
+
+#### Step 6: Statistical Analysis
+```r
+anova_latency <- aov(Latency ~ as.factor(Day) * Model, data = summary_df)
+summary(anova_latency)
+```
+
 **Note**: For "target quadrant" and "wall zone" time, change PM[1,,,] to PM[3,,,] or PM[5,,,]
 
 ---
@@ -89,7 +96,7 @@ df_combined25$Day <- 1:nrow(df_combined25)
 df_combined25_long <- gather(df_combined25, "Trial", "Latency", -Day)
 df_combined25_long$Model <- "wall:place=0.25:0.75"
 ```
-#### Step 3: Repeat similar steps for other ratios (e.g., 0.5:0.5, 0.75:0.25) and label them accordingly.  
+#### Step 3: Repeat similar steps for other ratios (0:1, 0.5:0.5, 0.75:0.25, 1:0) and label them accordingly.  
 **Note**: The weight of distance cells can be changed by altering **weight_wall <- 0.5**
 
 #### Step 4: Combine All Models for Comparison
@@ -120,6 +127,13 @@ ggplot(summary_combined, aes(x = Day, y = Mean, color = Model)) +
   labs(x = "Day", y = "Latency (s)") +
   theme_classic()
 ```
+
+#### Step 6: Statistical Analysis
+```r
+anova_latency <- aov(Latency ~ Model, data = summary_combined)
+summary(anova_latency)
+```
+
 **Note**: For "target quadrant" and "wall zone" time, change PM[1,,,,] to PM[3,,,,] or PM[5,,,,]
 
 ## Interpreting Results
