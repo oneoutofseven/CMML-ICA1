@@ -31,7 +31,7 @@ library(tidyr)
 library(dplyr)
 
 # For the place-cell-only model
-latency_place <- PMs_place[1,,,]
+latency_place <- PMs_place[1,,,] # In the model, it only has PMs. So, you can use PMs_place <- PMs to store the data.
 df_place <- data.frame(latency_place)
 df_place$Day <- 1:nrow(df_place)
 df_place_long <- gather(df_place, "Trial", "Latency", -Day)
@@ -75,7 +75,7 @@ ggplot(summary_df, aes(x = Day, y = Mean, color = Model)) +
 
 ```r
 # For the combined model with 25% distance cell signals and 75% place cell signals:
-latency_combined25 <- PMs_combined25[1,,,,]
+latency_combined25 <- PMs_combined25[1,,,,] # In the model, it only has PMs. So, you can use PMs_combined25 <- PMs to store the data.
 df_combined25 <- data.frame(latency_combined25)
 df_combined25$Day <- 1:nrow(df_combined25)
 df_combined25_long <- gather(df_combined25, "Trial", "Latency", -Day)
