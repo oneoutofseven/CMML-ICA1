@@ -139,7 +139,7 @@ TukeyHSD(anova_latency)
 ```
 
 **Note**: For "target quadrant" and "wall zone" time, change PM[1,,,,] to PM[3,,,,] or PM[5,,,,]
-
+---
 ## 3. Interpreting Results
 
 - **Latency**: Lower latency implies improved learning.
