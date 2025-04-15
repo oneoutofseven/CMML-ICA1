@@ -87,6 +87,9 @@ TukeyHSD(anova_latency)
 #### Step 1: Run "place distance cells combined model.R"
 #### Step 2: Preparing Data for the Combined Model (Example: Ratio 0.25:0.75)
 ```r
+library(tidyr)
+library(dplyr)
+
 # For the combined model with 25% distance cell signals and 75% place cell signals
 PMs_combined25 <- PMs
 latency_combined25 <- PMs_combined25[1,,,,] # In the model, it only has PMs. So, you can use PMs_combined25 <- PMs to store the data.
@@ -111,6 +114,8 @@ df_all <- rbind(
 
 #### Step 5: Plotting Comparison
 ```r
+library(ggplot2)
+
 summary_combined <- df_all %>%
   group_by(Day, Model) %>%
   summarise(
